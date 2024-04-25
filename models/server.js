@@ -1,5 +1,6 @@
 const express = require('express')
 const cors = require('cors')
+const {dbConnection} = require('../database/config.db')
 
 class Server {
 
@@ -8,11 +9,18 @@ class Server {
          this.port = process.env.PORT || 3000;
          this.usuariosPath = '/restserver/usuarios';
 
+         // Coneccion a base de datos
+         this.conectarDB();
+
          // Middlewares: Son funciones que añaden otra funcionalidad al web server, es una funcion que siempre se ejecutara al lebantar el servidor.
          this.middlewares();
 
          // Rutas de la aplicacion
          this.routes();
+    }
+
+    async conectarDB() {
+        await dbConnection();
     }
 
     // Creo el metodo "middlewares" relacionado a la carpeta publica
