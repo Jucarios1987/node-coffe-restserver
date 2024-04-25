@@ -1,4 +1,5 @@
 const {response, request} = require('express'); 
+const Usuario = require('../models/usuario'); 
 
 const usuariosGet = (req = request, res = response) => {
 
@@ -30,16 +31,18 @@ const usuariosPut = (req, res) => {
     });
 }
 
-const usuariosPost = (req, res) => {
+const usuariosPost = async (req, res = response) => {
     
-    const {nombre, edad} = req.body;
-    
+    // La constante body hace referencia al body de la peticion post y esta compuesto por el JSON que enviemos en la peticion a traves de PostMan.
+    const body = req.body;
+    // Creamos una instancia del modelo de "Usuario"
+    const usuario = new Usuario( body );
+
+    // Ahora procedemos a guardar el registro en la DB
+    await usuario.save();
+
     res.json({
-        msg: 'post API - usuariosPost Controller',
-        //body
-        // A cotinuacion estraemos cada una de las propiedades que necesitamos del JSon
-        nombre,
-        edad
+        usuario
     });
 }
 
